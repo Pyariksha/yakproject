@@ -51,10 +51,12 @@ x = now - start
 x= x.days 
 x = int(x)
 T=x
-print(T)
+print(T*0.01)
 
 #calculate product totals for milk and skins
 def get_totals(T):
+    herd_df['age'] = herd_df['age'] + (T*0.01)
+
     global total_shaved
     global total_milk
     for n in herd_df['age_days']:
@@ -75,6 +77,7 @@ print(total_milk)
 print(total_shaved)
 
 herd_df = herd_df[['name', 'age', 'sex']]
+herd_df 
 
 #/herd
 class Herd(Resource):

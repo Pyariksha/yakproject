@@ -51,21 +51,32 @@ T=x
 
 #calculate product totals for milk and skins
 def get_totals(T):
-    global total_shaved
-    global total_milk
+    global skins
+    global milk
+
+    herd_df['age'] = herd_df['age'] + (T*0.01)
+
     for n in herd_df['age_days']:
         milk = T * (50 - ((herd_df['age_days'])*0.03))
         herd_df['milk'] = milk
-        total_milk = herd_df['milk'].sum()
+        milk = herd_df['milk'].sum()
 
     for n in herd_df['age_days']:
         if  n < 1000:
             if T%13 == 0:
                 shaved = T/13 * 1
-                herd_df['shaved'] = shaved
-                total_shaved = herd_df['shaved'].sum()
+                herd_df['skins'] = shaved
+                skins = herd_df['skins'].sum()
 
 get_totals(T)
+
+totals = {}
+for variable in ["milk", "skins"]:
+    totals[variable] = eval(variable)
+
+IDs = ['In Stock']
+Defaults = totals
+totals = dict.fromkeys(IDs, Defaults)
 
 herd_df = herd_df[['name', 'age', 'sex']]
 
@@ -74,6 +85,10 @@ class Herd(Resource):
     def get(self):
         data = herd_df
         data = data.to_dict()
+        IDs = ['Herd']
+        Defaults = data
+        data = dict.fromkeys(IDs, Defaults)
+        data.update(totals)
         return{'data': data}, 200
 
 #api.com/herd
