@@ -4,6 +4,8 @@ from flask_restful import Resource, Api, reqparse
 import pandas as pd
 import ast
 import xml.etree.ElementTree as et 
+import numpy as np
+from datetime import timedelta, datetime
 
 #intitialize flask and api
 app = Flask(__name__)
@@ -31,6 +33,41 @@ for child in xroot:
 herd_df = pd.DataFrame(rows, columns = df_cols)
 
 herd_df.head()
+
+#get age as days
+herd_df["age"] = herd_df["age"].astype(float)
+herd_df['age_days'] = herd_df["age"]*100
+herd_df
+
+#define start of project
+now = datetime.now()
+start = datetime(2021,11,17)
+
+#get integer for days as T
+x = now - start
+x= x.days 
+x = int(x)
+T=x
+
+#calculate product totals for milk and skins
+def get_totals(T):
+    global total_shaved
+    global total_milk
+    for n in herd_df['age_days']:
+        milk = T * (50 - ((herd_df['age_days'])*0.03))
+        herd_df['milk'] = milk
+        total_milk = herd_df['milk'].sum()
+
+    for n in herd_df['age_days']:
+        if  n < 1000:
+            if T%13 == 0:
+                shaved = T/13 * 1
+                herd_df['shaved'] = shaved
+                total_shaved = herd_df['shaved'].sum()
+
+get_totals(T)
+
+herd_df = herd_df[['name', 'age', 'sex']]
 
 #/herd
 class Herd(Resource):
