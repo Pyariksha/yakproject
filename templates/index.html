@@ -8,7 +8,9 @@
         <img src="C:\Users\pya.tiluk\yakproject\yaklogo.png">
         <br>
         <form action="entry" method="post">
-            <p>What would you like to order?</p>
+            {% for message in get_flashed_messages() %}
+                <p>{{message}}</p>
+            {% endfor %}
             <br>
             <input type="number" name="num_input">
             <br>
