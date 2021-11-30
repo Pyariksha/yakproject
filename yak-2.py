@@ -38,7 +38,10 @@ herd_df['age_days'] = herd_df["age"]*100
 
 #define start of project (testing for 13 days)
 now = datetime.now()
-start = datetime(2021,11,17)
+#start = datetime(2021,11,16)
+day = 14
+delta = now - timedelta(day)
+start = delta
 
 #set integer for days as T
 x = now - start
@@ -51,10 +54,10 @@ def get_totals(T):
     global skins
     global milk
 
-    herd_df['age'] = herd_df['age'] + (T*0.01)
+    herd_df['age'] = round(herd_df['age'] + (T*0.01), 2)
 
     for n in herd_df['age_days']:
-        milk = T * (50 - ((herd_df['age_days'])*0.03))
+        milk = round(T * (50 - ((herd_df['age_days'])*0.03)), 2)
         herd_df['milk'] = milk
         milk = herd_df['milk'].sum()
 
@@ -64,34 +67,65 @@ def get_totals(T):
                 shaved = T/13 * 1
                 herd_df['skins'] = shaved
                 skins = herd_df['skins'].sum()
+            elif (T - 13) < 13:
+                T = T - (T-13)
+                shaved = T/13 * 1
+                herd_df['skins'] = shaved
+                skins = herd_df['skins'].sum()
 
 get_totals(T)
+
+#rest T to x
+T=x
+
+pd.options.mode.chained_assignment = None  # default='warn'
+print_herd = herd_df[['name','age']]
+print_herd['age'] = print_herd['age'].astype(str) + ' years old'
+print_herd = print_herd.to_string(header=False, index= False)
+
+print('In stock:')
+print(' ' + str(milk) + ' litres of milk')
+print(' ' + str(skins) + ' skins of wool')
+
+print('Herd:')
+print(print_herd)
 
 #create a totals nested dictionary for desired output format
 totals = {}
 for variable in ["milk", "skins"]:
     totals[variable] = eval(variable)
 
-IDs = ['In Stock']
-Defaults = totals
-totals = dict.fromkeys(IDs, Defaults)
+totals
+
+#IDs = ['In Stock']
+#Defaults = totals
+#totals = dict.fromkeys(IDs, Defaults)
 
 #only select necessary herd_df columns
 herd_df = herd_df[['name', 'age', 'sex']]
 
 #create a class for GET requests for input data to api
+class Stock(Resource):
+    def get(self):
+        data = totals
+        #data = data.to_dict()
+        #IDs = ['Herd']
+        #Defaults = data
+        #data = dict.fromkeys(IDs, Defaults)
+        #data.update(totals)
+        return{'data': data}, 200
+
+#api.com/herd
+api.add_resource(Stock, f'/yak-shop/stock/{T}')
+
 class Herd(Resource):
     def get(self):
         data = herd_df
         data = data.to_dict()
-        IDs = ['Herd']
-        Defaults = data
-        data = dict.fromkeys(IDs, Defaults)
-        data.update(totals)
         return{'data': data}, 200
 
 #api.com/herd
-api.add_resource(Herd, '/herd')
+api.add_resource(Herd, f'/yak-shop/herd/{T}')
 
 if __name__ == "__main__":
     app.run(debug=True)
