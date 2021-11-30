@@ -95,12 +95,6 @@ totals = {}
 for variable in ["milk", "skins"]:
     totals[variable] = eval(variable)
 
-totals
-
-#IDs = ['In Stock']
-#Defaults = totals
-#totals = dict.fromkeys(IDs, Defaults)
-
 #only select necessary herd_df columns
 herd_df = herd_df[['name', 'age', 'sex']]
 
@@ -108,11 +102,6 @@ herd_df = herd_df[['name', 'age', 'sex']]
 class Stock(Resource):
     def get(self):
         data = totals
-        #data = data.to_dict()
-        #IDs = ['Herd']
-        #Defaults = data
-        #data = dict.fromkeys(IDs, Defaults)
-        #data.update(totals)
         return{'data': data}, 200
 
 #api.com/herd
