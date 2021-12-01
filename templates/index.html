@@ -9,6 +9,14 @@
     <body>
         <img src="https://raw.githubusercontent.com/Pyariksha/yakproject/master/Yaklogo.JPG">
         <br>
+        <video controls
+            src="https://archive.org/22/items/labyakvid/labyakvid.mp4"
+            width="620">
+        Sorry, your browser doesn't support embedded videos,
+        but don't worry, you can <a href="https://archive.org/details/labyakvid">download it</a>
+        and watch it with your favorite video player!
+        </video>
+        <br>
         <form action="reply" method="post">
             {% for message in get_flashed_messages() %}
                 <p>{{message}}</p>
