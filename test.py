@@ -113,3 +113,5 @@ api.add_resource(Herd, f'/yak-shop/stock/{T}')
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
