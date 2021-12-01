@@ -133,34 +133,31 @@ print(order_df)
 class Post(Resource):
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('customer', required=True)
-        parser.add_argument('milk', required=True)
-        parser.add_argument('skins', required=True)
+        parser.add_argument('customer', required=True) #create args
+        parser.add_argument('milk', required=True, type = int)
+        parser.add_argument('skins', required=True, type = int)
         args = parser.parse_args()  # parse arguments to dictionary
+        #test in insomnia
         #return {
            #'cust': args['customer'],
           # 'milk': args['milk'],
           # 'skins': args['skins']
         #}, 200
-        
-        data = order_df
 
-        if args['milk'] > herd_df['milk'].sum() and args['skins'] <= herd_df['skins'].sum():
-            order = data.append({
+        if args['milk'] > int(milk) and args['skins'] <= int(skins): #requirements
+            return{
             'customer': args['customer'],
-            'skins': args['skins']}, ignore_index= True)
-            return {'order': order.to_dict()}, 206
+            'skins': args['skins']}, 206
 
-        elif args['milk'] > herd_df['milk'].sum() and args['skins'] > herd_df['skins'].sum():
+        elif args['milk'] > int(milk) and args['skins'] > int(skins): #requirements
             return{
                 'message': "404 not found - not in stock"
             }, 404
         else:
-            order = data.append({
+            return{
             'customer': args['customer'],
             'milk': args['milk'],
-            'skins': args['skins']}, ignore_index= True)
-            return {'order': order.to_dict()}, 201  
+            'skins': args['skins']}, 201
 
 #api.com/herd
 api.add_resource(Post, f'/yak-shop/order/{T}')
