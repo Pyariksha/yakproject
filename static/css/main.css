@@ -26,16 +26,18 @@ input {
     font-size: 1.3 em;
 }
 
-#Order1 {
-    background-color: whitesmoke;
+#order1 {
+    background-color: gray;
     color: black;
-    width: 250px;
+    width: 120px;
+    height: 25px;
 }
 
-#Order2 {
-    background-color: whitesmoke;
+#order2 {
+    background-color: gray;
     color: black;
-    width: 250px;
+    width: 120px;
+    height: 25px;
 }
 
 #Order1:hover {
