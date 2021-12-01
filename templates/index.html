@@ -9,6 +9,10 @@
     <body>
         <img src="https://raw.githubusercontent.com/Pyariksha/yakproject/master/Yaklogo.JPG">
         <br>
+        <video width="320" height="240" controls>
+            <source src="movie.mp4" type="video/mp4">
+        </video>
+        <br>
         <form action="reply" method="post">
             {% for message in get_flashed_messages() %}
                 <p>{{message}}</p>
