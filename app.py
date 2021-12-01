@@ -13,7 +13,8 @@ def index():
 
 @app.route("/input", methods=['GET', 'POST'])
 def input():
-    flash("Hi! Order for " + str(request.form["num_input"]) + " is received") 
+    flash("Hi! Order for " + str(request.form["1_input"]) + " is received") 
+    flash("Hi! Order for " + str(request.form["2_input"]) + " is received") 
     return render_template("index.html")
 
 if __name__ == "__main__":
