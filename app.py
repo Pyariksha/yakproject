@@ -8,13 +8,22 @@ app.secret_key = "labyak1"
 
 @app.route("/hello")
 def index():
-    flash("What would you like to order?")
+    flash("Hi! Or should we say Mooo?? What would you like to order?")
     return render_template("index.html")
 
 @app.route("/reply", methods=['GET', 'POST'])
 def reply():
-    flash("Hi! Order for " + str(request.form['1_input']) + " litres of milk is received") 
-    flash("Hi! Order for " + str(request.form['2_input']) + " packs of skins is received") 
+    milk = 20
+    skins = 10
+    if int(request.form['1_input']) > milk:
+        flash("Amount of milk not available")
+    else:
+        flash("Order for " + str(request.form['1_input']) + " litres of milk is received") 
+
+    if int(request.form['2_input']) > skins:
+        flash("Amount of skins packs not available")
+    else:
+        flash("Order for " + str(request.form['2_input']) + " packs of skins is received") 
     return render_template("index.html")
 
 if __name__ == "__main__":
