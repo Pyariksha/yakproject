@@ -90,7 +90,7 @@ print(' ' + str(skins) + ' skins of wool')
 print('Herd:')
 print(print_herd)
 
-#create a totals nested dictionary for desired output format
+#create a totals dictionary for desired output format
 totals = {}
 for variable in ["milk", "skins"]:
     totals[variable] = eval(variable)
