@@ -7,6 +7,8 @@ import xml.etree.ElementTree as et
 import numpy as np
 from datetime import timedelta, datetime
 
+from app import index
+
 #intitialize flask and api
 app = Flask(__name__)
 api = Api(app)
@@ -89,7 +91,7 @@ print(' ' + str(milk) + ' litres of milk')
 print(' ' + str(skins) + ' skins of wool')
 
 print('Herd:')
-print(print_herd)
+print(herd_df)
 
 #create a totals dictionary for desired output format
 totals = {}
@@ -97,7 +99,7 @@ for variable in ["milk", "skins"]:
     totals[variable] = eval(variable)
 
 #only select necessary herd_df columns
-herd_df = herd_df[['name', 'age', 'sex']]
+herd_df_get = herd_df[['name', 'age', 'sex']]
 
 #create a class for GET requests for stock
 class Stock(Resource):
@@ -110,15 +112,58 @@ api.add_resource(Stock, f'/yak-shop/stock/{T}')
 
 class Herd(Resource):
     def get(self):
-        data = herd_df
+        data = herd_df_get
         data = data.to_dict()
         return{'data': data}, 200
 
 #api.com/herd
 api.add_resource(Herd, f'/yak-shop/herd/{T}')
 
-class Post(Resource):
-    
+#create a orders data
+orderdata = {'customer':[],
+        'milk':[],
+        'skins': []}
 
+order_df = pd.DataFrame(orderdata)
+order_df['customer'].astype(str)
+order_df['milk'].astype(int)
+order_df['skins'].astype(int)
+print(order_df)
+
+class Post(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('customer', required=True)
+        parser.add_argument('milk', required=True)
+        parser.add_argument('skins', required=True)
+        args = parser.parse_args()  # parse arguments to dictionary
+        #return {
+           #'cust': args['customer'],
+          # 'milk': args['milk'],
+          # 'skins': args['skins']
+        #}, 200
+        
+        data = order_df
+
+        if args['milk'] > herd_df['milk'].sum() and args['skins'] <= herd_df['skins'].sum():
+            order = data.append({
+            'customer': args['customer'],
+            'skins': args['skins']}, ignore_index= True)
+            return {'order': order.to_dict()}, 206
+
+        elif args['milk'] > herd_df['milk'].sum() and args['skins'] > herd_df['skins'].sum():
+            return{
+                'message': "404 not found - not in stock"
+            }, 404
+        else:
+            order = data.append({
+            'customer': args['customer'],
+            'milk': args['milk'],
+            'skins': args['skins']}, ignore_index= True)
+            return {'order': order.to_dict()}, 201  
+
+#api.com/herd
+api.add_resource(Post, f'/yak-shop/order/{T}')
+    
 if __name__ == "__main__":
     app.run(debug=True)
