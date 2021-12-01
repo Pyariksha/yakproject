@@ -1,12 +1,13 @@
 from typing_extensions import Required
-from flask import Flask
+from flask import Flask, render_template, request, flash
+from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 import pandas as pd
 import ast
 import xml.etree.ElementTree as et 
 import numpy as np
 from datetime import timedelta, datetime
-
+from flask_cors import CORS
 from app import index
 
 #intitialize flask and api
