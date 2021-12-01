@@ -75,9 +75,10 @@ def get_totals(T):
 
 get_totals(T)
 
-#rest T to x
+#restore T to x
 T=x
 
+#print out desired output
 pd.options.mode.chained_assignment = None  # default='warn'
 print_herd = herd_df[['name','age']]
 print_herd['age'] = print_herd['age'].astype(str) + ' years old'
@@ -98,13 +99,13 @@ for variable in ["milk", "skins"]:
 #only select necessary herd_df columns
 herd_df = herd_df[['name', 'age', 'sex']]
 
-#create a class for GET requests for input data to api
+#create a class for GET requests for stock
 class Stock(Resource):
     def get(self):
         data = totals
         return{'data': data}, 200
 
-#api.com/herd
+#create a class for GET requests for herd
 api.add_resource(Stock, f'/yak-shop/stock/{T}')
 
 class Herd(Resource):
@@ -115,6 +116,9 @@ class Herd(Resource):
 
 #api.com/herd
 api.add_resource(Herd, f'/yak-shop/herd/{T}')
+
+class Post(Resource):
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
