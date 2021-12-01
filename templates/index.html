@@ -9,9 +9,11 @@
     <body>
         <img src="https://raw.githubusercontent.com/Pyariksha/yakproject/master/Yaklogo.JPG">
         <br>
-        <video width="320" height="240" controls>
-            <source src="C:\Users\pya.tiluk\yakproject\labyakvid" type="video/mp4">
+        <video width="320" height="240" loop = "true" autoplay="autoplay" controls>
+            <source src="https://github.com/Pyariksha/yakproject/blob/master/labyakvid.mp4" type="video/mp4">
         </video>
+        <br>
+        <img src="C:\Users\pya.tiluk\yakproject\yak.gif alt='yaks'">
         <br>
         <form action="reply" method="post">
             {% for message in get_flashed_messages() %}
