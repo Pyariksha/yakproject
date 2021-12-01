@@ -11,7 +11,7 @@ def index():
     flash("What would you like to order?")
     return render_template("index.html")
 
-@app.route("/input", methods=["POST"])
+@app.route("/input", methods=['GET', 'POST'])
 def input():
     flash("Hi! Order for " + str(request.form["num_input"]) + " is received") 
     return render_template("index.html")
