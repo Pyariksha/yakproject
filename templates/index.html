@@ -9,8 +9,6 @@
     <body>
         <img src="https://raw.githubusercontent.com/Pyariksha/yakproject/master/Yaklogo.JPG">
         <br>
-        <img src="https://github.com/Pyariksha/yakproject/blob/master/yak.gif">
-        <br>
         <form action="reply" method="post">
             {% for message in get_flashed_messages() %}
                 <p>{{message}}</p>
@@ -24,5 +22,7 @@
             <br>
             <input type="submit" value="Order skins (packs)" id="order2">
         </form>
+        <br>
+        <img src="https://github.com/Pyariksha/yakproject/blob/master/yak.gif">
     </body>
 </html>
