@@ -71,7 +71,7 @@ def get_totals(T):
         milk = herd_df['milk'].sum()
 
     for n in herd_df['age_days']:
-        if  n < 1000:
+        if  n < 1000 and n > 100:
             if T%13 == 0:
                 shaved = T/13 * 1
                 herd_df['skins'] = shaved
