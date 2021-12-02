@@ -85,14 +85,18 @@ def index():
 
 @app.route("/reply", methods=['GET', 'POST'])
 def reply():
-   #milk = 20
+    #tes t dummy variables for milk and skins
+    #milk = 20
     #skins = 10
     if int(request.form['1_input']) > milk and int(request.form['2_input'])<= skins:
         flash("Partial order available - milk not in stock but " + str(request.form['2_input']) + " skins ordered")
+        flash("Order of milk is greater than stock by " + str(-(milk - int(request.form['1_input']))) + " litres")
     elif int(request.form['1_input']) <= milk and int(request.form['2_input']) > skins:
         flash("Partial order available - skins not in stock but " + str(request.form['1_input']) + " litres of milk ordered")
+        flash("Order of skins packs is greater than stock by " + str(-(skins - int(request.form['2_input']))))
     elif int(request.form['1_input']) > milk and int(request.form['2_input']) > skins:
         flash("Requested milk and skins not in stock")
+        flash("Order of milk and skins packs are greater than stock by " + str(-(milk - int(request.form['1_input']))) + " litres and " + str(-(skins - int(request.form['2_input']))) + " skins packs")
     else:
         flash("Order for " + str(request.form['1_input']) + " litres of milk "  + " and " + str(request.form['2_input']) + " skins " + " is successful") 
     return render_template("index.html")
