@@ -119,20 +119,21 @@ class Herd(Resource):
 #GET to herd/T
 api.add_resource(Herd, f'/yak-shop/herd/{T}')
 
-#create a orders data
-orderdata = {'customer':[],
-        'milk':[],
-        'skins': []}
+#create a orders data for testing
+#orderdata = {'customer':[],
+        #'milk':[],
+        #'skins': []}
 
-order_df = pd.DataFrame(orderdata)
-order_df['customer'].astype(str)
-order_df['milk'].astype(int)
-order_df['skins'].astype(int)
-print(order_df)
+#order_df = pd.DataFrame(orderdata)
+#order_df['customer'].astype(str)
+#order_df['milk'].astype(int)
+#order_df['skins'].astype(int)
+#print(order_df)
 
+#POST to /order/T
 class Post(Resource):
     def post(self):
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser() #initialize
         parser.add_argument('customer', required=True) #create args
         parser.add_argument('milk', required=True, type = int)
         parser.add_argument('skins', required=True, type = int)
@@ -144,17 +145,22 @@ class Post(Resource):
           # 'skins': args['skins']
         #}, 200
 
-        if args['milk'] > int(milk) and args['skins'] <= int(skins): #requirements
+        if args['milk'] > int(milk) and args['skins'] <= int(skins):   #requirements for partial order - skins
             return{
             'customer': args['customer'],
             'skins': args['skins']}, 206
 
-        elif args['milk'] > int(milk) and args['skins'] > int(skins): #requirements
+        elif args['milk'] <= int(milk) and args['skins'] > int(skins): #requirements for partial order - milk
+            return{
+            'customer': args['customer'],
+            'milk': args['milk']}, 206
+
+        elif args['milk'] > int(milk) and args['skins'] > int(skins):  #requirements for out of stock all
             return{
                 'message': "404 not found - not in stock"
             }, 404
         else:
-            return{
+            return{                                                    #all in stock
             'customer': args['customer'],
             'milk': args['milk'],
             'skins': args['skins']}, 201
@@ -162,6 +168,7 @@ class Post(Resource):
 #post to /order/T
 api.add_resource(Post, f'/yak-shop/order/{T}')
     
+#run flask 
 if __name__ == "__main__":
     app.run(debug=True)
     
