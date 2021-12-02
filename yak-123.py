@@ -42,12 +42,11 @@ herd_df['age_days'] = herd_df["age"]*100
 #define start of project (testing for 13 days)
 now = datetime.now()
 #start = datetime(2021,11,16)
-day = 14
-delta = now - timedelta(day)
-start = delta
+day = 13
+delta = now - timedelta(day) #use start if set predefined date
 
 #set integer for days as T
-x = now - start
+x = now - delta
 x= x.days 
 x = int(x)
 T=x
@@ -92,7 +91,7 @@ print(' ' + str(milk) + ' litres of milk')
 print(' ' + str(skins) + ' skins of wool')
 
 print('Herd:')
-print(herd_df)
+print(print_herd)
 
 #create a totals dictionary for desired output format
 totals = {}
@@ -108,7 +107,7 @@ class Stock(Resource):
         data = totals
         return{'data': data}, 200
 
-#create a class for GET requests for herd
+#GET to stock/T
 api.add_resource(Stock, f'/yak-shop/stock/{T}')
 
 class Herd(Resource):
@@ -117,7 +116,7 @@ class Herd(Resource):
         data = data.to_dict()
         return{'data': data}, 200
 
-#api.com/herd
+#GET to herd/T
 api.add_resource(Herd, f'/yak-shop/herd/{T}')
 
 #create a orders data
@@ -160,7 +159,7 @@ class Post(Resource):
             'milk': args['milk'],
             'skins': args['skins']}, 201
 
-#api.com/herd
+#post to /order/T
 api.add_resource(Post, f'/yak-shop/order/{T}')
     
 if __name__ == "__main__":
