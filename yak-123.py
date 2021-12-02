@@ -42,7 +42,7 @@ herd_df['age_days'] = herd_df["age"]*100
 #define start of project (testing for 13 days)
 now = datetime.now()
 #start = datetime(2021,11,16)
-day = 13
+day = 14
 delta = now - timedelta(day) #use start if set predefined date
 
 #set integer for days as T
