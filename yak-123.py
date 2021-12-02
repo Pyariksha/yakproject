@@ -14,6 +14,13 @@ from app import index
 app = Flask(__name__)
 api = Api(app)
 
+#Ignore - YAK-5 test - output to input flow
+#import glob
+#import os
+#list_of_files = glob.glob('/path/to/folder/*') # * means all 
+#latest_file = max(list_of_files, key=os.path.getctime)
+#users_path = f'C:\\Users\\pya.tiluk\\yakproject\\{latest_file}'
+
 #get input xml
 users_path = r'C:\Users\pya.tiluk\yakproject\inputherd.xml'
 
@@ -100,6 +107,14 @@ for variable in ["milk", "skins"]:
 
 #only select necessary herd_df columns
 herd_df_get = herd_df[['name', 'age', 'sex']]
+
+#Ignore - YAK-5 df output to xml and write to file system - issue with writing et 
+#xml = herd_df_get.to_xml(attr_cols=[
+#          'name', 'age', 'sex'
+#          ])
+#w_xml = et.fromstring(xml)
+#with open(f"inputherd{T}.xml", 'wb') as f:
+#    f.write(w_xml)
 
 #create a class for GET requests for stock
 class Stock(Resource):
